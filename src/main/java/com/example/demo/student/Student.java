@@ -2,12 +2,14 @@ package com.example.demo.student;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.time.Period;
 
 @Entity
-@Table(name ="students")
+@Table(name = "students")
 
+// Represents a Student entity mapped to a database tabl
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -31,16 +33,17 @@ public class Student {
     @Column(name = "name")
     private String name;
 
-    @Column(name= "email")
+    @Column(name = "email")
     private String email;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    // Not stored in the database — calculated dynamically
     @Transient
     private Integer age;
 
-    public Student(){
+    public Student() {
 
     }
 
@@ -59,27 +62,27 @@ public class Student {
 
     }
 
-    public Long getId(){
+    public Long getId() {
         return id;
     }
 
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email){
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -100,12 +103,12 @@ public class Student {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Student{" + "id=" + id +
-                            " name=" + name +
-                            " email" + email +
-                            " birthdate" + birthDate+
-                            " age" + age +
-                            "}";
+                " name=" + name +
+                " email" + email +
+                " birthdate" + birthDate +
+                " age" + age +
+                "}";
     }
 }
