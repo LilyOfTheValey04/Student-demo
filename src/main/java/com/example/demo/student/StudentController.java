@@ -1,0 +1,55 @@
+package com.example.demo.student;
+
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(path ="api/v1/student")
+public class StudentController {
+
+    private final StudentService studentService;
+
+    // outdated method
+  //  @Autowired
+  // public StudentController(StudentService studentService){
+  //     this.studentService = studentService;
+  //  }
+
+    @GetMapping
+    public List<Student> getStudents() {
+        return studentService.get();
+    }
+
+    @PostMapping
+    public ResponseEntity<String> registerNewStudent(@RequestBody Student student){
+
+        studentService.addNewStudent(student);
+        return ResponseEntity.ok("Student with id "+ student.getId() + " has been added to the database");
+    }
+
+    //take the id from the path and delete student with that id
+    @DeleteMapping(path = "{studentId}")
+    public ResponseEntity<String> deleteStudent(@PathVariable("studentId") Long studentId){
+        studentService.deleteStudent(studentId);
+        return ResponseEntity.ok("Student with id " + studentId + " deleted");
+
+    }
+
+    @PutMapping(path = "{studentId}")
+    public ResponseEntity<String> updateStudent(
+            @PathVariable("studentId") Long studentId,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email) {
+
+        studentService.updateStudent(studentId, name, email);
+        return ResponseEntity.ok("Student with id " + studentId + " has been updated");
+    }
+
+
+
+}
