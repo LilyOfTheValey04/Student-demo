@@ -16,7 +16,7 @@ public class StudentService {
 
     private final  StudentRepository studentRepository;
     public List<Student> get() {
-        return studentRepository.findAll();
+        return studentRepository.findAllByOrderByIdAsc();
     }
 
     public void addNewStudent(Student student) {
@@ -51,7 +51,7 @@ public class StudentService {
         }
 
 
-        if(StringUtils.hasText(email) && Objects.equals(student.getEmail(), email)){
+        if(StringUtils.hasText(email) && !Objects.equals(student.getEmail(), email)){
             Optional<Student> studentOptional = studentRepository.findAllByEmail(email);
             if(studentOptional.isPresent()){
                 throw new IllegalStateException("This email is taken");

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,8 +44,9 @@ public class StudentController {
     @PutMapping(path = "{studentId}")
     public ResponseEntity<String> updateStudent(
             @PathVariable("studentId") Long studentId,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email) {
+            @RequestBody Map<String, Object> updates) {
+          String name = (String) updates.get("name");
+          String email = (String) updates.get("email");
 
         studentService.updateStudent(studentId, name, email);
         return ResponseEntity.ok("Student with id " + studentId + " has been updated");
