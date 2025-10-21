@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -62,6 +63,10 @@ public class StudentService {
             student.setEmail(email);
         }
 
+    }
+
+    public Student getStudentOrThrow(Long id){
+        return studentRepository.findById(id).orElseThrow(()-> new NoSuchElementException(" element with id " +id+" does not exist" ));
     }
 }
 

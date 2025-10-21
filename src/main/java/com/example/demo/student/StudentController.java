@@ -1,11 +1,13 @@
 package com.example.demo.student;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,17 +31,27 @@ public class StudentController {
 
     // Adds a new student (expects JSON body)
     @PostMapping
-    public ResponseEntity<String> registerNewStudent(@RequestBody Student student) {
+    public ResponseEntity<Long> createStudent(@RequestBody Student student) {
 
         studentService.addNewStudent(student);
-        return ResponseEntity.ok("Student with id " + student.getId() + " has been added to the database");
+        return new ResponseEntity<>(student.getId(),HttpStatus.CREATED);
+        //return ResponseEntity.ok("Student with id " + student.getId() + " has been added to the database");
     }
 
     //take the id from the path and delete student with that id
     @DeleteMapping(path = "{studentId}")
     public ResponseEntity<String> deleteStudent(@PathVariable("studentId") Long studentId) {
-        studentService.deleteStudent(studentId);
-        return ResponseEntity.ok("Student with id " + studentId + " deleted");
+
+        try{
+            studentService.deleteStudent(studentId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+       // studentService.deleteStudent(studentId);
+       // return new ResponseEntity<>(HttpStatus.OK);
+       // return ResponseEntity.ok("Student with id " + studentId + " deleted");
 
     }
 

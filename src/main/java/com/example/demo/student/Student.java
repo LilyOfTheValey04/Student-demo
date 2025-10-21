@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 @Entity
-@Table(name = "students")
+@Table(name = "student")
 
 // Represents a Student entity mapped to a database tabl
 public class Student {
