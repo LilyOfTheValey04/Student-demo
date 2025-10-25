@@ -23,5 +23,7 @@ public class Club {
     @Column(name = "club_name")
     private String clubName;
 
-    Set<Student> students;
+    @OneToMany(mappedBy = "club",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonProperty
+    private Set<Student> students;
 }

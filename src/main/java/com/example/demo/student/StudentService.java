@@ -1,5 +1,7 @@
 package com.example.demo.student;
 
+import com.example.demo.club.Club;
+import com.example.demo.club.ClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +19,28 @@ public class StudentService {
 
     // Injected repository (final = immutable dependency)
     private final StudentRepository studentRepository;
+    private final ClubService clubService;
 
     // Returns all students ordered by their ID (ascending)
-    public List<Student> getStudents() {
-        return studentRepository.findAllByOrderByIdAsc();
+   public  List<Student> getStudents() {
+       return studentRepository.findAllByOrderByIdAsc();
+    }
+
+    public Student saveStudent(Student student){
+
+        Optional<Student> studentOptional = studentRepository.findByEmail(student.getEmail());
+        if (studentOptional.isPresent()) {
+            throw new IllegalStateException("This email is taken");
+        }
+
+       Club requestClub = student.getClub();
+       if(requestClub != null){
+
+           Club club = clubService.getClubByName(requestClub.getClubName());
+           student.setClub(club);
+       }
+
+       return studentRepository.save(student);
     }
 
     // Adds a new student if the email is unique
@@ -67,6 +87,14 @@ public class StudentService {
 
     public Student getStudentOrThrow(Long id){
         return studentRepository.findById(id).orElseThrow(()-> new NoSuchElementException(" element with id " +id+" does not exist" ));
+    }
+
+    public Student assignStudentClub(Long studentId, Long clubId){
+        Student fetchStudent = getStudentOrThrow(studentId);
+        Club fetchClub = clubService.getClubOrThrow(clubId);
+
+        fetchStudent.setClub(fetchClub);
+        return studentRepository.save(fetchStudent);
     }
 }
 

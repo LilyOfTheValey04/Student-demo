@@ -14,6 +14,8 @@ import java.util.Optional;
 public class ClubController {
     private final ClubService clubService;
 
+
+
     @GetMapping
     public ResponseEntity<List<Club>> getAllClubs(){
         return new  ResponseEntity<>(clubService.getClubs(), HttpStatus.OK);
@@ -34,6 +36,11 @@ public class ClubController {
     @PostMapping
     public ResponseEntity<Club> createClub(@RequestBody Club club){
         return  new ResponseEntity<>(clubService.createClub(club), HttpStatus.CREATED);
+    }
+
+    @PostMapping
+    public ResponseEntity<Club> saveClub(@RequestBody Club club){
+        return new ResponseEntity<>(clubService.saveClub(club), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

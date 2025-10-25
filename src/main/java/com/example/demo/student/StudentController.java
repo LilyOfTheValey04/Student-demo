@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -66,4 +67,15 @@ public class StudentController {
         studentService.updateStudent(studentId, name, email);
         return ResponseEntity.ok("Student with id " + studentId + " has been updated");
     }
+
+    @PutMapping("/{studentId}/club/{clubId}")
+    public ResponseEntity<Student> assignStudentClub(@PathVariable Long studentId ,@PathVariable Long clubId){
+        try{
+            return  new ResponseEntity<>(studentService.assignStudentClub(studentId,clubId), HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
+    }
+
 }

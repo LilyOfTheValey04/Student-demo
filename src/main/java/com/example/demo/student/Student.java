@@ -1,5 +1,7 @@
 package com.example.demo.student;
 
+import com.example.demo.club.Club;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
@@ -27,88 +29,57 @@ public class Student {
             generator =  "student_sequence"
     )*/
 
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "email")
     private String email;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    // Not stored in the database — calculated dynamically
+    // many students can belong to one club
+    @ManyToOne
+    @JoinColumn(name = "club_id", nullable = true)
+    @JsonBackReference
+    private Club club;
+
     @Transient
     private Integer age;
 
-    public Student() {
+    public Student() {}
 
-    }
-
-    public Student(Long id, String name, String email, LocalDate birthDate) {
-        this.id = id;
+    public Student(String name, String email, LocalDate birthDate, Club club) {
         this.name = name;
         this.email = email;
         this.birthDate = birthDate;
-
+        this.club = club;
     }
 
-    public Student(String name, String email, LocalDate birthDate) {
-        this.name = name;
-        this.email = email;
-        this.birthDate = birthDate;
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public String getEmail() { return email; }
+    public LocalDate getBirthDate() { return birthDate; }
+    public Club getClub() { return club; }
 
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setEmail(String email) { this.email = email; }
+    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
+    public void setClub(Club club) { this.club = club; }
 
     public Integer getAge() {
         return Period.between(this.birthDate, LocalDate.now()).getYears();
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     @Override
     public String toString() {
-        return "Student{" + "id=" + id +
-                " name=" + name +
-                " email" + email +
-                " birthdate" + birthDate +
-                " age" + age +
-                "}";
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", birthDate=" + birthDate +
+                ", age=" + getAge() +
+                ", club=" + (club != null ? club.getClubName() : "none") +
+                '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.club;
 
+import com.example.demo.student.Student;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +38,13 @@ public class ClubService {
 
     public Club getClubOrThrow(Long id){
         return clubRepository.findById(id).orElseThrow(() -> new NoSuchElementException("club with id " +id+ " does not exists"));
+    }
+
+
+
+    public Club getClubByName(String clubName) {
+    }
+
+    public Club saveClub(Club club) {
     }
 }
