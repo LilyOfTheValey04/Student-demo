@@ -23,6 +23,10 @@ public class Club {
     @Column(name = "club_name")
     private String clubName;
 
+    public Club (String clubName){
+        this.clubName = clubName;
+    }
+
     @OneToMany(mappedBy = "club",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonProperty
     private Set<Student> students;

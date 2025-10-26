@@ -34,9 +34,17 @@ public class StudentController {
     @PostMapping
     public ResponseEntity<Long> createStudent(@RequestBody Student student) {
 
-        studentService.addNewStudent(student);
+       // studentService.addNewStudent(student);
+        studentService.saveStudent(student);
         return new ResponseEntity<>(student.getId(),HttpStatus.CREATED);
         //return ResponseEntity.ok("Student with id " + student.getId() + " has been added to the database");
+    }
+
+    @PostMapping("/auto/club")
+    public ResponseEntity<Long> createStudentAndAutoClub(@RequestBody Student student){
+        Student savedStudent = studentService.saveStudentAndCreateClub(student);
+        return new ResponseEntity<>(savedStudent.getId(), HttpStatus.CREATED);
+
     }
 
     //take the id from the path and delete student with that id

@@ -34,13 +34,8 @@ public class ClubController {
     }
 
     @PostMapping
-    public ResponseEntity<Club> createClub(@RequestBody Club club){
-        return  new ResponseEntity<>(clubService.createClub(club), HttpStatus.CREATED);
-    }
-
-    @PostMapping
     public ResponseEntity<Club> saveClub(@RequestBody Club club){
-        return new ResponseEntity<>(clubService.saveClub(club), HttpStatus.OK);
+        return new ResponseEntity<>(clubService.saveClub(club), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

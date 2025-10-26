@@ -43,6 +43,21 @@ public class StudentService {
        return studentRepository.save(student);
     }
 
+    public Student saveStudentAndCreateClub(Student student){
+       Optional<Student> studentOptional = studentRepository.findByEmail(student.getEmail());
+       if(studentOptional.isPresent()){
+           throw new IllegalStateException("This email is taken");
+       }
+
+       Club requrestClub = student.getClub();
+       if(requrestClub != null && requrestClub.getClubName() != null ){
+           Club club = clubService.getOrSave(requrestClub.getClubName());
+           student.setClub(club);
+       }
+       return studentRepository.save(student);
+    }
+
+
     // Adds a new student if the email is unique
     public void addNewStudent(Student student) {
         Optional<Student> studentOptional = studentRepository.findByEmail(student.getEmail());

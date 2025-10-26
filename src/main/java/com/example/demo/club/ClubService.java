@@ -18,10 +18,6 @@ public class ClubService {
      return clubRepository.findAllByOrderByIdAsc();
     }
 
-    public Club createClub(Club club) {
-        return clubRepository.save(club);
-    }
-
     public Optional<Club> getClubById(Long id) {
         return clubRepository.findById(id);
     }
@@ -43,8 +39,19 @@ public class ClubService {
 
 
     public Club getClubByName(String clubName) {
+        return clubRepository.findClubsByClubName(clubName)
+                .orElseThrow(() -> new NoSuchElementException("This club " +clubName+ " does not exists" ));
     }
 
     public Club saveClub(Club club) {
+        Optional<Club> existingClub = clubRepository.findClubsByClubName(club.getClubName());
+        if(existingClub.isPresent()){
+            throw new IllegalStateException("this club already "+club.getClubName()+" exists");
+        }
+        return clubRepository.save(club);
+    }
+
+    public Club getOrSave(String clubName){
+       return clubRepository.findClubsByClubName(clubName).orElseGet(() -> clubRepository.save(new Club(clubName)));
     }
 }
