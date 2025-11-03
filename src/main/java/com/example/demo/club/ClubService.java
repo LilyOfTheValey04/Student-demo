@@ -1,6 +1,7 @@
 package com.example.demo.club;
 
 import com.example.demo.student.Student;
+import com.example.demo.student.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClubService {
     private final ClubRepository clubRepository;
+    private final StudentRepository studentRepository;
 
 
     public List<Club> getClubs() {
@@ -22,7 +24,7 @@ public class ClubService {
         return clubRepository.findById(id);
     }
 
-    public void deleteClubById(Long id) {
+   /* public void deleteClubById(Long id) {
         boolean exists = clubRepository.existsById(id);
         if(exists){
             clubRepository.deleteById(id);
@@ -30,6 +32,19 @@ public class ClubService {
         else{
             throw new NoSuchElementException("No such club with id: " + id);
         }
+    }*/
+
+    public void deleteClubById(Long id){
+        Club club = clubRepository.findClubsById(id)
+                .orElseThrow(()-> new NoSuchElementException("Club with id "+id+" does not exists"));
+
+        for(Student student : club.getStudents()){
+            student.setClub(null);
+        }
+
+        studentRepository.saveAll(club.getStudents());
+
+        clubRepository.delete(club);
     }
 
     public Club getClubOrThrow(Long id){

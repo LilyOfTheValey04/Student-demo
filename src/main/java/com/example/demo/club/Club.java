@@ -1,6 +1,7 @@
 package com.example.demo.club;
 
 import com.example.demo.student.Student;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,8 +27,9 @@ public class Club {
     public Club (String clubName){
         this.clubName = clubName;
     }
+    @JsonIgnore
 
-    @OneToMany(mappedBy = "club",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "club",cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JsonProperty
     private Set<Student> students;
 }

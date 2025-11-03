@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface ClubRepository extends CrudRepository<Club, Long> {
     Optional<Club> findClubsByClubName(String name);
+    Optional<Club> findClubsById(Long id);
     List<Club> findAllByOrderByIdAsc();
 }

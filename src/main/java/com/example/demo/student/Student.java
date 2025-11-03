@@ -40,7 +40,8 @@ public class Student {
     // many students can belong to one club
     @ManyToOne
     @JoinColumn(name = "club_id", nullable = true)
-    @JsonBackReference
+    @JsonProperty("club")
+    //@JsonBackReference
     private Club club;
 
     @Transient

@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 
 import java.time.LocalDate;
@@ -21,16 +22,19 @@ public class StudentConfig {
     // CommandLineRunner runs automatically after the Spring Boot app starts.
     // It’s often used to insert sample data or perform startup logic.
     @Bean
+
     @Order(2)
+
     CommandLineRunner commandLineRunner(StudentRepository studentRepository, ClubRepository clubRepository) {
         return args -> {
             // Create sample students
             ///  add club
-           Club programmingClub = clubRepository.findClubsByClubName("programing club")
-                   .orElseThrow(() -> new NoSuchElementException("This club does not exists"));
+            // Проверяваме дали клубовете съществуват, и ако не — ги създаваме
+            Club programmingClub = clubRepository.findClubsByClubName("programming club")
+                    .orElseGet(() -> clubRepository.save(new Club("programming club")));
 
-           Club mathClub = clubRepository.findClubsByClubName("math club")
-                   .orElseThrow(() -> new NoSuchElementException("This club does not exist"));
+            Club mathClub = clubRepository.findClubsByClubName("math club")
+                    .orElseGet(() -> clubRepository.save(new Club("math club")));
 
             Student lily = new Student(
 

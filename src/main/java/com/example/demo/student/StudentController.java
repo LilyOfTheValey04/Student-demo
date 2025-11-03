@@ -31,14 +31,14 @@ public class StudentController {
     }
 
     // Adds a new student (expects JSON body)
-    @PostMapping
+   /* @PostMapping
     public ResponseEntity<Long> createStudent(@RequestBody Student student) {
 
        // studentService.addNewStudent(student);
         studentService.saveStudent(student);
         return new ResponseEntity<>(student.getId(),HttpStatus.CREATED);
         //return ResponseEntity.ok("Student with id " + student.getId() + " has been added to the database");
-    }
+    }*/
 
     @PostMapping("/auto/club")
     public ResponseEntity<Long> createStudentAndAutoClub(@RequestBody Student student){
@@ -64,7 +64,7 @@ public class StudentController {
 
     }
 
-    // Updates a student
+    // Updates a student's name and email
     @PutMapping(path = "{studentId}")
     public ResponseEntity<String> updateStudent(
             @PathVariable("studentId") Long studentId,
@@ -76,10 +76,12 @@ public class StudentController {
         return ResponseEntity.ok("Student with id " + studentId + " has been updated");
     }
 
+    //Updates student's club
+    // finds student by id and updates the club by id
     @PutMapping("/{studentId}/club/{clubId}")
     public ResponseEntity<Student> assignStudentClub(@PathVariable Long studentId ,@PathVariable Long clubId){
         try{
-            return  new ResponseEntity<>(studentService.assignStudentClub(studentId,clubId), HttpStatus.OK);
+            return new ResponseEntity<>(studentService.assignStudentClub(studentId,clubId), HttpStatus.OK);
         }catch (NoSuchElementException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
