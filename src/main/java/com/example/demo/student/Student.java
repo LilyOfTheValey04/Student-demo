@@ -56,10 +56,18 @@ public class Student {
         this.club = club;
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
     public String getName() { return name; }
-    public String getEmail() { return email; }
-    public LocalDate getBirthDate() { return birthDate; }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
     public Club getClub() { return club; }
 
     public void setId(Long id) { this.id = id; }
