@@ -4,30 +4,25 @@ import com.example.demo.club.Club;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.Period;
 
 @Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "student")
 
-// Represents a Student entity mapped to a database tabl
+
+
+// Represents a Student entity mapped to a database table
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-
-    // old verision
-    /*@SequenceGenerator(
-            name = "student_sequence",
-            sequenceName = "student_sequence",
-            allocationSize =  1
-    )
-
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY,
-            generator =  "student_sequence"
-    )*/
 
     private Long id;
 
@@ -47,40 +42,11 @@ public class Student {
     @Transient
     private Integer age;
 
-    public Student() {}
-
-    public Student(String name, String email, LocalDate birthDate, Club club) {
-        this.name = name;
-        this.email = email;
-        this.birthDate = birthDate;
-        this.club = club;
-    }
-
-    public Long getId() {
-        return id;
-    }
-    public String getName() { return name; }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-    public Club getClub() { return club; }
-
-    public void setId(Long id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setEmail(String email) { this.email = email; }
-    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
-    public void setClub(Club club) { this.club = club; }
-
     public Integer getAge() {
         return Period.between(this.birthDate, LocalDate.now()).getYears();
     }
 
-    @Override
+   /* @Override
     public String toString() {
         return "Student{" +
                 "id=" + id +
@@ -90,5 +56,5 @@ public class Student {
                 ", age=" + getAge() +
                 ", club=" + (club != null ? club.getClubName() : "none") +
                 '}';
-    }
+    }*/
 }

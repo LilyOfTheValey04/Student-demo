@@ -1,18 +1,15 @@
 package com.example.demo.student;
 
 import com.example.demo.club.Club;
-import com.example.demo.club.ClubConfig;
 import com.example.demo.club.ClubRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
+
 
 import static java.time.Month.*;
 
@@ -31,12 +28,26 @@ public class StudentConfig {
             ///  add club
             // Проверяваме дали клубовете съществуват, и ако не — ги създаваме
             Club programmingClub = clubRepository.findClubsByClubName("programming club")
-                    .orElseGet(() -> clubRepository.save(new Club("programming club")));
+                    .orElseGet(() -> clubRepository.save( Club.builder().clubName("programming club").build()));
 
             Club mathClub = clubRepository.findClubsByClubName("math club")
-                    .orElseGet(() -> clubRepository.save(new Club("math club")));
+                    .orElseGet(() -> clubRepository.save(Club.builder().clubName("math club").build()));
 
-            Student lily = new Student(
+            Student lily = Student.builder()
+                    .name("lily")
+                    .email("lily.com")
+                    .birthDate(LocalDate.of(2002, APRIL, 6))
+                    .club(programmingClub)
+                    .build();
+
+            Student georgi = Student.builder()
+                    .name("georgi")
+                    .email("geori@com")
+                    .birthDate(LocalDate.of(2001, JUNE, 6))
+                    .club(mathClub)
+                    .build();
+
+          /*  Student lily = new Student(
 
                     "lily",
                     "lily.com",
@@ -50,7 +61,7 @@ public class StudentConfig {
                     "georgi.com",
                     LocalDate.of(2001, JUNE, 6),
                     mathClub
-            );
+            );;*/
 
             studentRepository.saveAll(List.of(lily, georgi));
         };

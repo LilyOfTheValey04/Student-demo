@@ -11,13 +11,23 @@ public class ClubConfig {
     @Order(1)
     CommandLineRunner clubcommandLineRunner (ClubRepository clubRepository){
         return args-> {
-            Club programmingClub = new Club();
+            Club programmingClub =  Club.builder()
+                    .clubName("programming club")
+                    .build();
+
+            Club mathClub = Club.builder()
+                    .clubName("math club")
+                    .build();
+
+            clubRepository.saveAll(List.of(programmingClub,mathClub));
+
+           /* Club programmingClub = new Club();
             programmingClub.setClubName("programing club");
 
             Club mathClub = new Club();
             mathClub.setClubName("math club");
 
-            clubRepository.saveAll(List.of(programmingClub,mathClub));
+            clubRepository.saveAll(List.of(programmingClub,mathClub));*/
         };
     }
 
