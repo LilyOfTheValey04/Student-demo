@@ -11,9 +11,5 @@ import java.util.Optional;
 public interface ClubRepository extends CrudRepository<Club, Long> {
 
     Optional<Club> findClubsByClubName(String name);
-   // Optional<Club> findClubsById(Long id);
-   @Query("SELECT c FROM Club c LEFT JOIN FETCH c.students WHERE c.id = :id")
-   Optional<Club> findByIdWithStudents(@Param("id") Long id);
-
     List<Club> findAllByOrderByIdAsc();
 }

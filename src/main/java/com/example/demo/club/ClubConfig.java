@@ -21,14 +21,7 @@ public class ClubConfig {
 
             clubRepository.saveAll(List.of(programmingClub,mathClub));
 
-           /* Club programmingClub = new Club();
-            programmingClub.setClubName("programing club");
-
-            Club mathClub = new Club();
-            mathClub.setClubName("math club");
-
-            clubRepository.saveAll(List.of(programmingClub,mathClub));*/
-        };
+         };
     }
 
 }

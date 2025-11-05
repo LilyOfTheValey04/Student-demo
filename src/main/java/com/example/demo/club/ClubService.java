@@ -20,43 +20,6 @@ public class ClubService {
      return clubRepository.findAllByOrderByIdAsc();
     }
 
-   /* @Transactional
-    public void deleteClubById(Long id) {
-        Club club = clubRepository.findByIdWithStudents(id)
-                .orElseThrow(() -> new NoSuchElementException("Club with id " + id + " does not exist"));
-
-        // Зареждаме всички студенти (JOIN FETCH вече го прави)
-        Set<Student> students = new HashSet<>(club.getStudents());
-
-        // Скъсваме връзката между студентите и клуба
-        for (Student s : students) {
-            s.setClub(null);
-        }
-
-        // 1️⃣ Изчистваме връзките от двете страни
-        club.getStudents().clear();
-
-        // 2️⃣ Записваме студентите без клуб
-        studentRepository.saveAll(students);
-
-        // 3️⃣ Изтриваме клуба
-        clubRepository.delete(club);
-    }*/
-
-
-
-    /*public void deleteClubById(Long id){
-        Club club = clubRepository.findClubsById(id)
-                .orElseThrow(()-> new NoSuchElementException("Club with id "+id+" does not exists"));
-
-        for(Student student : club.getStudents()){
-            student.setClub(null);
-        }
-
-        studentRepository.saveAll(club.getStudents());
-
-        clubRepository.delete(club);
-    }*/
     public Optional<Club> getClubById(Long id) {
         return clubRepository.findById(id);
     }

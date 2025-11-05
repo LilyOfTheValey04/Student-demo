@@ -47,22 +47,6 @@ public class StudentConfig {
                     .club(mathClub)
                     .build();
 
-          /*  Student lily = new Student(
-
-                    "lily",
-                    "lily.com",
-                    LocalDate.of(2002, APRIL, 6),
-                    programmingClub
-            );
-
-            Student georgi = new Student(
-
-                    "georgi",
-                    "georgi.com",
-                    LocalDate.of(2001, JUNE, 6),
-                    mathClub
-            );;*/
-
             studentRepository.saveAll(List.of(lily, georgi));
         };
 
