@@ -2,12 +2,12 @@ package com.example.demo.club;
 
 import com.example.demo.student.Student;
 import com.example.demo.student.StudentRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -20,21 +20,32 @@ public class ClubService {
      return clubRepository.findAllByOrderByIdAsc();
     }
 
-    public Optional<Club> getClubById(Long id) {
-        return clubRepository.findById(id);
-    }
+   /* @Transactional
+    public void deleteClubById(Long id) {
+        Club club = clubRepository.findByIdWithStudents(id)
+                .orElseThrow(() -> new NoSuchElementException("Club with id " + id + " does not exist"));
 
-   /* public void deleteClubById(Long id) {
-        boolean exists = clubRepository.existsById(id);
-        if(exists){
-            clubRepository.deleteById(id);
+        // Зареждаме всички студенти (JOIN FETCH вече го прави)
+        Set<Student> students = new HashSet<>(club.getStudents());
+
+        // Скъсваме връзката между студентите и клуба
+        for (Student s : students) {
+            s.setClub(null);
         }
-        else{
-            throw new NoSuchElementException("No such club with id: " + id);
-        }
+
+        // 1️⃣ Изчистваме връзките от двете страни
+        club.getStudents().clear();
+
+        // 2️⃣ Записваме студентите без клуб
+        studentRepository.saveAll(students);
+
+        // 3️⃣ Изтриваме клуба
+        clubRepository.delete(club);
     }*/
 
-    public void deleteClubById(Long id){
+
+
+    /*public void deleteClubById(Long id){
         Club club = clubRepository.findClubsById(id)
                 .orElseThrow(()-> new NoSuchElementException("Club with id "+id+" does not exists"));
 
@@ -45,6 +56,20 @@ public class ClubService {
         studentRepository.saveAll(club.getStudents());
 
         clubRepository.delete(club);
+    }*/
+    public Optional<Club> getClubById(Long id) {
+        return clubRepository.findById(id);
+    }
+    @Transactional
+    public void deleteClubById(Long id) {
+        if(!clubRepository.existsById(id)){
+            throw new NoSuchElementException("Club with id"+id+"does not exists");
+        }
+        // 1) премахваме FK от студентите в single UPDATE
+        studentRepository.detachStudentsFromClub(id);
+
+        // 2) изтриваме клуба
+        clubRepository.deleteById(id);
     }
 
     public Club getClubOrThrow(Long id){
@@ -67,6 +92,6 @@ public class ClubService {
     }
 
     public Club getOrSave(String clubName){
-       return clubRepository.findClubsByClubName(clubName).orElseGet(() -> clubRepository.save(new Club(clubName)));
+       return clubRepository.findClubsByClubName(clubName).orElseGet(() -> clubRepository.save( Club.builder().clubName(clubName).build()));
     }
 }

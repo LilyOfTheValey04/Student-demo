@@ -31,8 +31,8 @@ public class Club {
     private String clubName;
 
     @JsonIgnore
-
-    @OneToMany(mappedBy = "club",cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @OneToMany(mappedBy = "club")
+   // @OneToMany(mappedBy = "club",cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JsonProperty
     private Set<Student> students;
 }
